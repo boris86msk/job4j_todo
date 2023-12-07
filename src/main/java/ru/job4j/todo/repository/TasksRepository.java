@@ -1,15 +1,17 @@
 package ru.job4j.todo.repository;
 
-import ru.job4j.todo.model.Tasks;
+import ru.job4j.todo.model.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TasksRepository {
-    void save(Tasks tasks);
-    List<Tasks> findAll();
-    Tasks findById(int id);
-    List<Tasks> findNew();
-    List<Tasks> findFinished();
-    void deleteById(int id);
-    void update(Tasks tasks);
+    Optional<Task> save(Task task);
+    List<Task> findAll();
+    Optional<Task> findById(int id);
+    List<Task> findByDone(boolean done);
+    boolean deleteById(int id);
+    boolean update(Task task);
+
+    boolean taskDone(int id);
 }

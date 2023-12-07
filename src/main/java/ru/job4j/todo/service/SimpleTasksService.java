@@ -1,10 +1,11 @@
 package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
-import ru.job4j.todo.model.Tasks;
+import ru.job4j.todo.model.Task;
 import ru.job4j.todo.repository.TasksRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SimpleTasksService implements TasksService {
@@ -15,37 +16,37 @@ public class SimpleTasksService implements TasksService {
     }
 
     @Override
-    public void add(Tasks tasks) {
-       tasksRepository.save(tasks);
+    public Optional<Task> add(Task task) {
+        return tasksRepository.save(task);
     }
 
     @Override
-    public List<Tasks> getAllTasks() {
+    public List<Task> getAllTasks() {
         return tasksRepository.findAll();
     }
 
     @Override
-    public List<Tasks> getFinishedTasks() {
-        return tasksRepository.findFinished();
+    public List<Task> getTasksByDone(boolean done) {
+        return tasksRepository.findByDone(done);
     }
 
     @Override
-    public List<Tasks> getNewTasks() {
-        return tasksRepository.findNew();
-    }
-
-    @Override
-    public Tasks getTaskById(int id) {
+    public Optional<Task> getTaskById(int id) {
         return tasksRepository.findById(id);
     }
 
     @Override
-    public void deleteTask(int id) {
-        tasksRepository.deleteById(id);
+    public boolean deleteTask(int id) {
+        return tasksRepository.deleteById(id);
     }
 
     @Override
-    public void editeTask(Tasks tasks) {
-        tasksRepository.update(tasks);
+    public boolean editeTask(Task task) {
+        return tasksRepository.update(task);
+    }
+
+    @Override
+    public boolean taskDone(int id) {
+        return tasksRepository.taskDone(id);
     }
 }

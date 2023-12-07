@@ -1,4 +1,4 @@
-package ru.job4j.todo.annotation;
+package ru.job4j.todo.configuration;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Config {
+public class HibernateConfiguration {
     @Bean(destroyMethod = "close")
     public SessionFactory sf() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()

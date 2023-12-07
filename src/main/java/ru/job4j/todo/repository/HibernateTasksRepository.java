@@ -3,9 +3,11 @@ package ru.job4j.todo.repository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.todo.model.Tasks;
+import ru.job4j.todo.model.Task;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class HibernateTasksRepository implements TasksRepository {
@@ -16,26 +18,28 @@ public class HibernateTasksRepository implements TasksRepository {
     }
 
     @Override
-    public void save(Tasks tasks) {
+    public Optional<Task> save(Task task) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.save(tasks);
+            session.save(task);
             session.getTransaction().commit();
+            return Optional.of(task);
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return Optional.empty();
     }
 
     @Override
-    public List<Tasks> findAll() {
+    public List<Task> findAll() {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Tasks> fromUser = session.createQuery("from Tasks ORDER BY id", Tasks.class).list();
+            List<Task> fromUser = session.createQuery("from Task ORDER BY id", Task.class).list();
             session.getTransaction().commit();
             return fromUser;
         } catch (Exception e) {
@@ -44,17 +48,17 @@ public class HibernateTasksRepository implements TasksRepository {
         } finally {
             session.close();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
-    public Tasks findById(int id) {
+    public Optional<Task> findById(int id) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            Tasks task = session.createQuery("from Tasks where id = :fId", Tasks.class)
+            Optional<Task> task = session.createQuery("from Task where id = :fId", Task.class)
                     .setParameter("fId", id)
-                    .uniqueResult();
+                    .uniqueResultOptional();
             session.getTransaction().commit();
             return task;
         } catch (Exception e) {
@@ -63,15 +67,16 @@ public class HibernateTasksRepository implements TasksRepository {
         } finally {
             session.close();
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public List<Tasks> findNew() {
+    public List<Task> findByDone(boolean done) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Tasks> tasks = session.createQuery("from Tasks where done = false", Tasks.class)
+            List<Task> tasks = session.createQuery("from Task where done = :done", Task.class)
+                    .setParameter("done", done)
                     .list();
             session.getTransaction().commit();
             return tasks;
@@ -81,61 +86,66 @@ public class HibernateTasksRepository implements TasksRepository {
         } finally {
             session.close();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
-    public List<Tasks> findFinished() {
+    public boolean deleteById(int id) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Tasks> tasks = session.createQuery("from Tasks where done = true", Tasks.class)
-                    .list();
-            session.getTransaction().commit();
-            return tasks;
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
-        return null;
-    }
-
-    @Override
-    public void deleteById(int id) {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            session.createQuery("DELETE Tasks WHERE id = :fId")
+            session.createQuery("DELETE Task WHERE id = :fId")
                     .setParameter("fId", id)
                     .executeUpdate();
             session.getTransaction().commit();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return false;
     }
 
     @Override
-    public void update(Tasks tasks) {
+    public boolean update(Task task) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.createQuery("UPDATE Tasks SET title = :title, description = :des, done = :done WHERE id = :fId")
-                    .setParameter("fId", tasks.getId())
-                    .setParameter("title", tasks.getTitle())
-                    .setParameter("des", tasks.getDescription())
-                    .setParameter("done", tasks.getDone())
+            session.createQuery("UPDATE Task SET title = :title, description = :des, done = :done WHERE id = :fId")
+                    .setParameter("fId", task.getId())
+                    .setParameter("title", task.getTitle())
+                    .setParameter("des", task.getDescription())
+                    .setParameter("done", task.isDone())
                     .executeUpdate();
             session.getTransaction().commit();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return false;
+    }
+
+    @Override
+    public boolean taskDone(int id) {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("UPDATE Task SET done = true WHERE id = :fId")
+                    .setParameter("fId", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return false;
     }
 }

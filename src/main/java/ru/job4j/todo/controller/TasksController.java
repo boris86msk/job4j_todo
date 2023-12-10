@@ -49,10 +49,9 @@ public class TasksController {
     public String deleteTask(@PathVariable int taskId, Model model) {
         if (tasksService.deleteTask(taskId)) {
             return "redirect:/index";
-        } else {
-            model.addAttribute("message", "Неудалось удалить задачу");
-            return "errors/error";
         }
+        model.addAttribute("message", "Неудалось удалить задачу");
+        return "errors/error";
     }
 
     @GetMapping("/edite/{taskId}")
@@ -61,40 +60,40 @@ public class TasksController {
         if (taskById.isPresent()) {
             model.addAttribute("task", taskById.get());
             return "edit_task";
-        } else {
-            model.addAttribute("message", "Неудалось обновить задачу");
-            return "errors/error";
         }
+        model.addAttribute("message", "Неудалось обновить задачу");
+        return "errors/error";
+
     }
 
     @PostMapping("/edite")
     public String editeTask(@ModelAttribute Task task, Model model) {
         if (tasksService.editeTask(task)) {
             return "redirect:/index";
-        } else {
-            model.addAttribute("message", "Неудалось редактировать задачу");
-            return "errors/error";
         }
+        model.addAttribute("message", "Неудалось редактировать задачу");
+        return "errors/error";
+
     }
 
     @PostMapping("/done")
     public String taskDone(@ModelAttribute Task task, Model model) {
         if (tasksService.taskDone(task.getId())) {
             return "redirect:/index";
-        } else {
-            model.addAttribute("message", "Неудалось закрыть задачу");
-            return "errors/error";
         }
+        model.addAttribute("message", "Неудалось закрыть задачу");
+        return "errors/error";
+
     }
 
     @PostMapping("/create")
     public String create(@ModelAttribute Task task, Model model) {
         if (tasksService.add(task).isPresent()) {
             return "redirect:/index";
-        } else {
-            model.addAttribute("message", "Неудалось добавить задачу");
-            return "errors/error";
         }
+        model.addAttribute("message", "Неудалось добавить задачу");
+        return "errors/error";
+
     }
 
     @GetMapping("/task/{taskId}")
@@ -103,9 +102,9 @@ public class TasksController {
         if (taskById.isPresent()) {
             model.addAttribute("task", taskById.get());
             return "task";
-        } else {
-            model.addAttribute("message", "Неудалось добавить задачу");
-            return "errors/error";
         }
+        model.addAttribute("message", "Неудалось добавить задачу");
+        return "errors/error";
+
     }
 }

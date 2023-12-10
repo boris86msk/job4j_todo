@@ -113,11 +113,10 @@ public class HibernateTasksRepository implements TasksRepository {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.createQuery("UPDATE Task SET title = :title, description = :des, done = :done WHERE id = :fId")
+            session.createQuery("UPDATE Task SET title = :title, description = :des WHERE id = :fId")
                     .setParameter("fId", task.getId())
                     .setParameter("title", task.getTitle())
                     .setParameter("des", task.getDescription())
-                    .setParameter("done", task.isDone())
                     .executeUpdate();
             session.getTransaction().commit();
             return true;

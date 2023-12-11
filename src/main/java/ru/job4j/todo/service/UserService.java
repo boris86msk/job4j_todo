@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface UserService {
     Optional<UserStore> saveUser(UserStore user);
+    Optional<UserStore> findByEmailAndPassword(String login, String pass);
 }

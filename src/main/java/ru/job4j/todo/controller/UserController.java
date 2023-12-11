@@ -35,7 +35,18 @@ public class UserController {
             model.addAttribute("message", "Пользователь с таким логином уже существует");
             return "errors/error";
         }
-        //return loginUser(user, model, request);
-        return "";
+        return loginUser(user, model, request);
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@ModelAttribute UserStore user, Model model, HttpServletRequest request) {
+        var userOptional = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
+        if (userOptional.isEmpty()) {
+            model.addAttribute("error", "Почта или пароль введены неверно");
+            return "users/login";
+        }
+        var session = request.getSession();
+        session.setAttribute("user", userOptional.get());
+        return "redirect:/index";
     }
 }

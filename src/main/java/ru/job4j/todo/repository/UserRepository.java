@@ -1,10 +1,10 @@
 package ru.job4j.todo.repository;
 
-import ru.job4j.todo.model.UserStore;
+import ru.job4j.todo.model.User;
 
 import java.util.Optional;
 
 public interface UserRepository {
-    Optional<UserStore> save(UserStore user);
-    Optional<UserStore> findByEmailAndPassword(String login, String pass);
+    Optional<User> save(User user);
+    Optional<User> findByEmailAndPassword(String login, String pass);
 }

@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.job4j.todo.model.UserStore;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registration(Model model, @ModelAttribute UserStore user, HttpServletRequest request) {
+    public String registration(Model model, @ModelAttribute User user, HttpServletRequest request) {
         var savedUser = userService.saveUser(user);
         if (savedUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с таким логином уже существует");
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute UserStore user, Model model, HttpServletRequest request) {
+    public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
         var userOptional = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
         if (userOptional.isEmpty()) {
             model.addAttribute("error", "Почта или пароль введены неверно");

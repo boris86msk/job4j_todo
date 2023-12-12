@@ -3,8 +3,7 @@ package ru.job4j.todo.repository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.todo.model.Task;
-import ru.job4j.todo.model.UserStore;
+import ru.job4j.todo.model.User;
 
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ public class HibernateUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<UserStore> save(UserStore user) {
+    public Optional<User> save(User user) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -34,12 +33,12 @@ public class HibernateUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<UserStore> findByEmailAndPassword(String login, String pass) {
+    public Optional<User> findByEmailAndPassword(String login, String pass) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            Optional<UserStore> task = session.createQuery("from UserStore where login = :fLogin"
-                            + " and password = :fPass", UserStore.class)
+            Optional<User> task = session.createQuery("from User where login = :fLogin"
+                            + " and password = :fPass", User.class)
                     .setParameter("fLogin", login)
                     .setParameter("fPass", pass)
                     .uniqueResultOptional();

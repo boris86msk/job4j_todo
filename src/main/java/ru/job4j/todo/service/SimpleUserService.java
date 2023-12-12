@@ -1,7 +1,7 @@
 package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
-import ru.job4j.todo.model.UserStore;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.HibernateUserRepository;
 
 import java.util.Optional;
@@ -15,12 +15,12 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public Optional<UserStore> saveUser(UserStore user) {
+    public Optional<User> saveUser(User user) {
         return hibernateUserRepository.save(user);
     }
 
     @Override
-    public Optional<UserStore> findByEmailAndPassword(String login, String pass) {
+    public Optional<User> findByEmailAndPassword(String login, String pass) {
         return hibernateUserRepository.findByEmailAndPassword(login, pass);
     }
 }

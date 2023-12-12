@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.job4j.todo.model.UserStore;
+import ru.job4j.todo.model.User;
 
 
 import java.io.IOException;
@@ -24,9 +24,9 @@ public class SessionFilter extends HttpFilter {
     }
 
     private void addUserToSession(HttpSession session, HttpServletRequest request) {
-        var user = (UserStore) session.getAttribute("user");
+        var user = (User) session.getAttribute("user");
         if (user == null) {
-            user = new UserStore();
+            user = new User();
             user.setName("Гость");
         }
         request.setAttribute("user", user);

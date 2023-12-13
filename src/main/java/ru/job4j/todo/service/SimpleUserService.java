@@ -2,25 +2,25 @@ package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.User;
-import ru.job4j.todo.repository.HibernateUserRepository;
+import ru.job4j.todo.repository.CrudUserRepository;
 
 import java.util.Optional;
 
 @Service
 public class SimpleUserService implements UserService {
-    private final HibernateUserRepository hibernateUserRepository;
+    private final CrudUserRepository crudUserRepository;
 
-    public SimpleUserService(HibernateUserRepository hibernateUserRepository) {
-        this.hibernateUserRepository = hibernateUserRepository;
+    public SimpleUserService(CrudUserRepository crudUserRepository) {
+        this.crudUserRepository = crudUserRepository;
     }
 
     @Override
     public Optional<User> saveUser(User user) {
-        return hibernateUserRepository.save(user);
+        return crudUserRepository.save(user);
     }
 
     @Override
     public Optional<User> findByEmailAndPassword(String login, String pass) {
-        return hibernateUserRepository.findByEmailAndPassword(login, pass);
+        return crudUserRepository.findByLoginAndPassword(login, pass);
     }
 }

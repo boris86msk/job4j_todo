@@ -20,8 +20,13 @@ public class CrudUserRepository {
      * @return пользователь с id.
      */
     public Optional<User> save(User user) {
-        crudRepository.run(session -> session.persist(user));
-        return Optional.of(user);
+        try {
+            crudRepository.run(session -> session.persist(user));
+            return Optional.of(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
     /**

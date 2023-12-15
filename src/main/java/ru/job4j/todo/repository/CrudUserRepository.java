@@ -25,8 +25,8 @@ public class CrudUserRepository {
             return Optional.of(user);
         } catch (Exception e) {
             e.printStackTrace();
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     /**

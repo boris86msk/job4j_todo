@@ -34,6 +34,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Заголовок</th>
                 <th scope="col">Автор</th>
+                <th scope="col">Приоритет</th>
                 <th scope="col">Создано</th>
                 <th scope="col">Статус</th>
             </tr>
@@ -42,7 +43,9 @@
             <tr th:each="task: ${tasks}">
                 <td th:text="${task.id}" />
                 <td><a th:text="${task.title}" th:href="@{/task/{taskId}(taskId=${task.id})}"></a></td>
-                <td th:text="${task.user.getName()}" />
+                <td th:text="${task.user.name}" />
+                <td th:if="${task.priority.name == 'urgently'}" class="bg-danger">высокий</td>
+                <td th:if="${task.priority.name == 'normal'}" class="bg-primary">обычный</td>
                 <td th:text="${task.created}" />
                 <td th:if="!${task.done}" class="table-active">активно</td>
                 <td th:if="${task.done}">выполнено</td>

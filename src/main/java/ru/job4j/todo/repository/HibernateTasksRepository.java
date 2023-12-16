@@ -39,7 +39,7 @@ public class HibernateTasksRepository implements TasksRepository {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Task> fromUser = session.createQuery("from Task ORDER BY id", Task.class).list();
+            List<Task> fromUser = session.createQuery("from Task f JOIN FETCH f.priority ORDER BY f.id", Task.class).list();
             session.getTransaction().commit();
             return fromUser;
         } catch (Exception e) {

@@ -3,9 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link th:href = "@{/css/bootstrap.css}" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+            integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+            crossorigin="anonymous"></script>
     <title>TODO</title>
 </head>
 <body class="bg-img">
@@ -18,7 +22,21 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label"><b>Описание</b></label>
-                <textarea class="form-control" id="description" name="description" rows="15" placeholder="описание...."></textarea>
+                <textarea class="form-control" id="description" name="description" rows="15"
+                          placeholder="описание...."></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="priority.id"><b>Приоритет</b></label>
+                <div class="row">
+                    <div class="col">
+                        <select class="form-control col" id="priority.id" name="priority.id">
+                            <option value="2">обычный</option>
+                            <option value="1">высокий</option>
+                        </select>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                </div>
             </div>
             <input type="hidden" name="done" value="false">
             <div class="mb-3 row">
@@ -26,7 +44,8 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-6"><a class="btn btn-danger w-100" th:href="@{/index}">Отмена</a></div>
-                        <div class="col-6"><button class="btn btn-primary w-100" type="submit">Добавить в список задач</button>
+                        <div class="col-6">
+                            <button class="btn btn-primary w-100" type="submit">Добавить в список задач</button>
                         </div>
                     </div>
                 </div>

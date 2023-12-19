@@ -3,6 +3,7 @@ package ru.job4j.todo.repository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
 
 import java.util.Collections;
@@ -80,6 +81,23 @@ public class HibernateTasksRepository implements TasksRepository {
                     .list();
             session.getTransaction().commit();
             return tasks;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Priority> findAllPriority() {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            List<Priority> fromUser = session.createQuery("from Priority ORDER BY id", Priority.class).list();
+            session.getTransaction().commit();
+            return fromUser;
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();

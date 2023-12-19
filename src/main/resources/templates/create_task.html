@@ -30,8 +30,7 @@
                 <div class="row">
                     <div class="col">
                         <select class="form-control col" id="priority.id" name="priority.id">
-                            <option value="2">обычный</option>
-                            <option value="1">высокий</option>
+                            <option th:each="pr : ${priority}" th:value="${pr.id}" th:text="${pr.name}"></option>
                         </select>
                     </div>
                     <div class="col"></div>

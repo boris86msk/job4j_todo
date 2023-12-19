@@ -25,7 +25,8 @@ public class TasksController {
     }
 
     @GetMapping("/create")
-    public String getCreatePage() {
+    public String getCreatePage(Model model) {
+        model.addAttribute("priority", tasksService.getAllPriority());
         return "create_task";
     }
 

@@ -44,8 +44,8 @@
                 <td th:text="${task.id}" />
                 <td><a th:text="${task.title}" th:href="@{/task/{taskId}(taskId=${task.id})}"></a></td>
                 <td th:text="${task.user.name}" />
-                <td th:if="${task.priority.name == 'urgently'}" class="bg-danger">высокий</td>
-                <td th:if="${task.priority.name == 'normal'}" class="bg-primary">обычный</td>
+                <td th:if="${task.priority.name == 'urgently'}" th:text="${task.priority.name}" class="bg-danger"></td>
+                <td th:if="${task.priority.name == 'normal'}" th:text="${task.priority.name}" class="bg-primary"></td>
                 <td th:text="${task.created}" />
                 <td th:if="!${task.done}" class="table-active">активно</td>
                 <td th:if="${task.done}">выполнено</td>

@@ -28,6 +28,9 @@
             <properties>
                 <liquibase.config>db/liquibase_test.properties</liquibase.config>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>production</id>

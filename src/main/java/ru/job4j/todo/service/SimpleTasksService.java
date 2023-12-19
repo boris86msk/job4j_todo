@@ -1,6 +1,7 @@
 package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
+import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.repository.TasksRepository;
 
@@ -28,6 +29,11 @@ public class SimpleTasksService implements TasksService {
     @Override
     public List<Task> getTasksByDone(boolean done) {
         return tasksRepository.findByDone(done);
+    }
+
+    @Override
+    public List<Priority> getAllPriority() {
+        return tasksRepository.findAllPriority();
     }
 
     @Override

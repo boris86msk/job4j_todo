@@ -41,7 +41,7 @@ public class HibernateTasksRepository implements TasksRepository {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Task> fromUser = session.createQuery("from Task f JOIN FETCH f.priority JOIN FETCH f.category ORDER BY f.id", Task.class).list();
+            List<Task> fromUser = session.createQuery("from Task t JOIN FETCH t.priority ORDER BY t.id", Task.class).list();
             session.getTransaction().commit();
             return fromUser;
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class HibernateTasksRepository implements TasksRepository {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            Optional<Task> task = session.createQuery("from Task where id = :fId", Task.class)
+            Optional<Task> task = session.createQuery("from Task t JOIN FETCH t.category where t.id = :fId", Task.class)
                     .setParameter("fId", id)
                     .uniqueResultOptional();
             session.getTransaction().commit();

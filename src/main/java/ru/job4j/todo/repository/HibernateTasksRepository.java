@@ -3,6 +3,7 @@ package ru.job4j.todo.repository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
 
@@ -40,7 +41,7 @@ public class HibernateTasksRepository implements TasksRepository {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Task> fromUser = session.createQuery("from Task f JOIN FETCH f.priority ORDER BY f.id", Task.class).list();
+            List<Task> fromUser = session.createQuery("from Task f JOIN FETCH f.priority JOIN FETCH f.category ORDER BY f.id", Task.class).list();
             session.getTransaction().commit();
             return fromUser;
         } catch (Exception e) {
@@ -96,6 +97,42 @@ public class HibernateTasksRepository implements TasksRepository {
         try {
             session.beginTransaction();
             List<Priority> fromUser = session.createQuery("from Priority ORDER BY id", Priority.class).list();
+            session.getTransaction().commit();
+            return fromUser;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Category> findAllCategory() {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            List<Category> fromUser = session.createQuery("from Category ORDER BY id", Category.class).list();
+            session.getTransaction().commit();
+            return fromUser;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Category> findCategoryById(List<Integer> listInt) {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            List<Category> fromUser = session.createQuery("from Category WHERE id IN :listInt", Category.class)
+                    .setParameter("listInt", listInt)
+                    .list();
             session.getTransaction().commit();
             return fromUser;
         } catch (Exception e) {

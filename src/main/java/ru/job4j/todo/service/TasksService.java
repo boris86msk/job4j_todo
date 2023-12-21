@@ -1,5 +1,6 @@
 package ru.job4j.todo.service;
 
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
 
@@ -11,6 +12,8 @@ public interface TasksService {
     List<Task> getAllTasks();
     List<Task> getTasksByDone(boolean done);
     List<Priority> getAllPriority();
+    List<Category> getAllCategory();
+    List<Category> getCategoryById(List<Integer> listInt);
     Optional<Task> getTaskById(int id);
     boolean deleteTask(int id);
     boolean editeTask(Task task);

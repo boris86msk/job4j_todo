@@ -3,11 +3,13 @@ package ru.job4j.todo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.TasksService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +29,7 @@ public class TasksController {
     @GetMapping("/create")
     public String getCreatePage(Model model) {
         model.addAttribute("priority", tasksService.getAllPriority());
+        model.addAttribute("categories", tasksService.getAllCategory());
         return "create_task";
     }
 
@@ -90,9 +93,11 @@ public class TasksController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task, Model model, HttpServletRequest request) {
+    public String create(@ModelAttribute Task task, @RequestParam List<Integer> categoryId, Model model,
+                         HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         task.setUser(user);
+        task.setCategory(tasksService.getCategoryById(categoryId));
         if (tasksService.add(task).isPresent()) {
             return "redirect:/index";
         }

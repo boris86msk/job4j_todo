@@ -22,7 +22,7 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label"><b>Описание</b></label>
-                <textarea class="form-control" id="description" name="description" rows="15"
+                <textarea class="form-control" id="description" name="description" rows="8"
                           placeholder="описание...."></textarea>
             </div>
             <div class="mb-3">
@@ -35,6 +35,13 @@
                     </div>
                     <div class="col"></div>
                     <div class="col"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label><b>Категории</b></label>
+                <div th:each="category : ${categories}">
+                    <input type="checkbox" name="categoryId" th:value="${category.id}" id="category" />
+                    <label for="category" th:text="${category.name}"></label>
                 </div>
             </div>
             <input type="hidden" name="done" value="false">

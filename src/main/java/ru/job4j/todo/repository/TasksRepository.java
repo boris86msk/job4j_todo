@@ -13,8 +13,6 @@ public interface TasksRepository {
     Optional<Task> findById(int id);
     List<Task> findByDone(boolean done);
     List<Priority> findAllPriority();
-    List<Category> findAllCategory();
-    List<Category> findCategoryById(List<Integer> listInt);
     boolean deleteById(int id);
     boolean update(Task task);
 

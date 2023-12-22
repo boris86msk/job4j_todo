@@ -6,14 +6,15 @@ import ru.job4j.todo.model.Task;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface TasksService {
     Optional<Task> add(Task task);
     List<Task> getAllTasks();
     List<Task> getTasksByDone(boolean done);
     List<Priority> getAllPriority();
-    List<Category> getAllCategory();
-    List<Category> getCategoryById(List<Integer> listInt);
+    Set<Category> getAllCategory();
+    Set<Category> getCategoryById(List<Integer> listInt);
     Optional<Task> getTaskById(int id);
     boolean deleteTask(int id);
     boolean editeTask(Task task);

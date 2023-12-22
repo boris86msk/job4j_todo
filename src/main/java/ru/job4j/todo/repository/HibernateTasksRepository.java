@@ -109,42 +109,6 @@ public class HibernateTasksRepository implements TasksRepository {
     }
 
     @Override
-    public List<Category> findAllCategory() {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            List<Category> fromUser = session.createQuery("from Category ORDER BY id", Category.class).list();
-            session.getTransaction().commit();
-            return fromUser;
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<Category> findCategoryById(List<Integer> listInt) {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            List<Category> fromUser = session.createQuery("from Category WHERE id IN :listInt", Category.class)
-                    .setParameter("listInt", listInt)
-                    .list();
-            session.getTransaction().commit();
-            return fromUser;
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
-        return Collections.emptyList();
-    }
-
-    @Override
     public boolean deleteById(int id) {
         Session session = sessionFactory.openSession();
         try {

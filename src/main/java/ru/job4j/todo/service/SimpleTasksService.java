@@ -4,17 +4,21 @@ import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.repository.CategoryRepository;
 import ru.job4j.todo.repository.TasksRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SimpleTasksService implements TasksService {
     private final TasksRepository tasksRepository;
+    private final CategoryRepository categoryRepository;
 
-    public SimpleTasksService(TasksRepository tasksRepository) {
+    public SimpleTasksService(TasksRepository tasksRepository, CategoryRepository categoryRepository) {
         this.tasksRepository = tasksRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -38,13 +42,13 @@ public class SimpleTasksService implements TasksService {
     }
 
     @Override
-    public List<Category> getAllCategory() {
-        return tasksRepository.findAllCategory();
+    public Set<Category> getAllCategory() {
+        return categoryRepository.findAllCategory();
     }
 
     @Override
-    public List<Category> getCategoryById(List<Integer> listInt) {
-        return tasksRepository.findCategoryById(listInt);
+    public Set<Category> getCategoryById(List<Integer> listInt) {
+        return categoryRepository.findCategoryById(listInt);
     }
 
     @Override

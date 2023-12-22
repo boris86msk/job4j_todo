@@ -21,4 +21,6 @@ public class User {
     private String login;
     @Column(name = "u_password")
     private String password;
+    @Column(name = "u_zone")
+    private String timezone;
 }

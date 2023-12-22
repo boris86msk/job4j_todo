@@ -4,12 +4,15 @@ import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.CategoryRepository;
 import ru.job4j.todo.repository.TasksRepository;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 
 @Service
 public class SimpleTasksService implements TasksService {
@@ -34,6 +37,19 @@ public class SimpleTasksService implements TasksService {
     @Override
     public List<Task> getTasksByDone(boolean done) {
         return tasksRepository.findByDone(done);
+    }
+
+    @Override
+    public List<Task> getTasksForTimeZone(List<Task> listTask, User user) {
+        for (Task task : listTask) {
+            var time = task.getCreated()
+                    .atZone(TimeZone.getDefault().toZoneId())
+                    .withZoneSameInstant(ZoneId.of(user.getTimezone()))
+                    .toLocalDateTime();
+
+            task.setCreated(time);
+        }
+        return listTask;
     }
 
     @Override

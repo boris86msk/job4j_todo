@@ -20,8 +20,10 @@ public class TasksController {
     }
 
     @GetMapping("index")
-    public String getIndexPage(Model model) {
-        model.addAttribute("tasks", tasksService.getAllTasks());
+    public String getIndexPage(Model model, @SessionAttribute User user) {
+        List<Task> allTasks = tasksService.getAllTasks();
+        List<Task> tasksForTimeZone = tasksService.getTasksForTimeZone(allTasks, user);
+        model.addAttribute("tasks", tasksForTimeZone);
         return "index";
     }
 

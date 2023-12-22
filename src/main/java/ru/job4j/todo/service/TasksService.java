@@ -3,6 +3,7 @@ package ru.job4j.todo.service;
 import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ public interface TasksService {
     Optional<Task> add(Task task);
     List<Task> getAllTasks();
     List<Task> getTasksByDone(boolean done);
+    List<Task> getTasksForTimeZone(List<Task> list, User user);
     List<Priority> getAllPriority();
     Set<Category> getAllCategory();
     Set<Category> getCategoryById(List<Integer> listInt);
@@ -19,5 +21,6 @@ public interface TasksService {
     boolean deleteTask(int id);
     boolean editeTask(Task task);
     boolean taskDone(int id);
+
 
 }

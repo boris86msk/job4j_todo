@@ -77,7 +77,7 @@ public class HibernateTasksRepository implements TasksRepository {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            List<Task> tasks = session.createQuery("from Task where done = :done", Task.class)
+            List<Task> tasks = session.createQuery("from Task t JOIN FETCH t.priority where done = :done", Task.class)
                     .setParameter("done", done)
                     .list();
             session.getTransaction().commit();

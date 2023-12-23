@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.TasksService;
+import ru.job4j.todo.util.TimeZoneUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -14,15 +15,17 @@ import java.util.Optional;
 @Controller
 public class TasksController {
     private final TasksService tasksService;
+    private final TimeZoneUtil timeZoneUtil;
 
-    public TasksController(TasksService tasksService) {
+    public TasksController(TasksService tasksService, TimeZoneUtil timeZoneUtil) {
         this.tasksService = tasksService;
+        this.timeZoneUtil = timeZoneUtil;
     }
 
     @GetMapping("index")
     public String getIndexPage(Model model, @SessionAttribute User user) {
         List<Task> allTasks = tasksService.getAllTasks();
-        List<Task> tasksForTimeZone = tasksService.getTasksForTimeZone(allTasks, user);
+        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
         model.addAttribute("tasks", tasksForTimeZone);
         return "index";
     }
@@ -35,20 +38,26 @@ public class TasksController {
     }
 
     @GetMapping("/full")
-    public String fullList(Model model) {
-        model.addAttribute("tasks", tasksService.getAllTasks());
+    public String fullList(Model model, @SessionAttribute User user) {
+        List<Task> allTasks = tasksService.getAllTasks();
+        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
+        model.addAttribute("tasks", tasksForTimeZone);
         return "index";
     }
 
     @GetMapping("/finished")
-    public String finishedList(Model model) {
-        model.addAttribute("tasks", tasksService.getTasksByDone(true));
+    public String finishedList(Model model, @SessionAttribute User user) {
+        List<Task> allTasks = tasksService.getTasksByDone(true);
+        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
+        model.addAttribute("tasks", tasksForTimeZone);
         return "index";
     }
 
     @GetMapping("/new")
-    public String newList(Model model) {
-        model.addAttribute("tasks", tasksService.getTasksByDone(false));
+    public String newList(Model model, @SessionAttribute User user) {
+        List<Task> allTasks = tasksService.getTasksByDone(false);
+        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
+        model.addAttribute("tasks", tasksForTimeZone);
         return "index";
     }
 
@@ -108,10 +117,12 @@ public class TasksController {
     }
 
     @GetMapping("/task/{taskId}")
-    public String getTaskPage(@PathVariable int taskId, Model model) {
+    public String getTaskPage(@PathVariable int taskId, Model model, @SessionAttribute User user) {
         Optional<Task> taskById = tasksService.getTaskById(taskId);
         if (taskById.isPresent()) {
-            model.addAttribute("task", taskById.get());
+            var task = taskById.get();
+            var taskTimeZone = timeZoneUtil.getTaskForTimeZone(task, user);
+            model.addAttribute("task", taskTimeZone);
             return "task";
         }
         model.addAttribute("message", "Неудалось добавить задачу");

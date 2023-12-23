@@ -13,7 +13,6 @@ public interface TasksService {
     Optional<Task> add(Task task);
     List<Task> getAllTasks();
     List<Task> getTasksByDone(boolean done);
-    List<Task> getTasksForTimeZone(List<Task> list, User user);
     List<Priority> getAllPriority();
     Set<Category> getAllCategory();
     Set<Category> getCategoryById(List<Integer> listInt);

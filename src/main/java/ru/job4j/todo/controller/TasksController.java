@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.TasksService;
-import ru.job4j.todo.util.TimeZoneUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -15,18 +14,14 @@ import java.util.Optional;
 @Controller
 public class TasksController {
     private final TasksService tasksService;
-    private final TimeZoneUtil timeZoneUtil;
 
-    public TasksController(TasksService tasksService, TimeZoneUtil timeZoneUtil) {
+    public TasksController(TasksService tasksService) {
         this.tasksService = tasksService;
-        this.timeZoneUtil = timeZoneUtil;
     }
 
-    @GetMapping("index")
+    @GetMapping({"index", "full"})
     public String getIndexPage(Model model, @SessionAttribute User user) {
-        List<Task> allTasks = tasksService.getAllTasks();
-        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
-        model.addAttribute("tasks", tasksForTimeZone);
+        model.addAttribute("tasks", tasksService.getAllTasks(user));
         return "index";
     }
 
@@ -37,27 +32,15 @@ public class TasksController {
         return "create_task";
     }
 
-    @GetMapping("/full")
-    public String fullList(Model model, @SessionAttribute User user) {
-        List<Task> allTasks = tasksService.getAllTasks();
-        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
-        model.addAttribute("tasks", tasksForTimeZone);
-        return "index";
-    }
-
     @GetMapping("/finished")
     public String finishedList(Model model, @SessionAttribute User user) {
-        List<Task> allTasks = tasksService.getTasksByDone(true);
-        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
-        model.addAttribute("tasks", tasksForTimeZone);
+        model.addAttribute("tasks", tasksService.getTasksByDone(true, user));
         return "index";
     }
 
     @GetMapping("/new")
     public String newList(Model model, @SessionAttribute User user) {
-        List<Task> allTasks = tasksService.getTasksByDone(false);
-        List<Task> tasksForTimeZone = timeZoneUtil.getTasksForTimeZone(allTasks, user);
-        model.addAttribute("tasks", tasksForTimeZone);
+        model.addAttribute("tasks", tasksService.getTasksByDone(false, user));
         return "index";
     }
 
@@ -121,7 +104,7 @@ public class TasksController {
         Optional<Task> taskById = tasksService.getTaskById(taskId);
         if (taskById.isPresent()) {
             var task = taskById.get();
-            var taskTimeZone = timeZoneUtil.getTaskForTimeZone(task, user);
+            var taskTimeZone = tasksService.getTaskForTimeZone(task, user);
             model.addAttribute("task", taskTimeZone);
             return "task";
         }

@@ -11,8 +11,9 @@ import java.util.Set;
 
 public interface TasksService {
     Optional<Task> add(Task task);
-    List<Task> getAllTasks();
-    List<Task> getTasksByDone(boolean done);
+    List<Task> getAllTasks(User user);
+    List<Task> getTasksByDone(boolean done, User user);
+    Task getTaskForTimeZone(Task task, User user);
     List<Priority> getAllPriority();
     Set<Category> getAllCategory();
     Set<Category> getCategoryById(List<Integer> listInt);

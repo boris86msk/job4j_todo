@@ -18,17 +18,24 @@ public class Task {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @EqualsAndHashCode.Include
     private String title;
+
     private String description;
+
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+
     private boolean done;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "priority_id")
     private Priority priority;
+
     @ManyToMany
     @JoinTable(
             name = "participates",
